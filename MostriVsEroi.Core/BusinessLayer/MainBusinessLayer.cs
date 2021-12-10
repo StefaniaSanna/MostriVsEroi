@@ -46,5 +46,20 @@ namespace MostriVsEroi.Core.BusinessLayer
         {
             return _mockRepoEroe.AddEroe(guerriero);
         }
+
+        public Mostro ScegliMostroRandom(Eroe eroe)
+        {
+            var mostriFiltered = _mockRepoMostro.FetchAllFilter(x => x.Livello <= eroe.Livello);
+            int max = mostriFiltered.Max(b => b.Id);
+            int min = mostriFiltered.Min(b => b.Id);
+            Random random = new Random();
+            int mostroId = random.Next(min, max + 1);
+            return mostriFiltered.SingleOrDefault(a => a.Id == mostroId);
+        }
+
+        public Arma GetArma(int idArma)
+        {
+            return _mockRepoArma.GetById(idArma);
+        }
     }
 }

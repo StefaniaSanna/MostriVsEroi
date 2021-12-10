@@ -36,7 +36,7 @@ namespace MostriVsEroi.ConsoleApp
                         Gioca(giocatore);
                         break;
                     case '2':
-                        CreaEroe();
+                        CreaEroe(giocatore);
                         break;
                     case '3':
                         EliminaEroe();

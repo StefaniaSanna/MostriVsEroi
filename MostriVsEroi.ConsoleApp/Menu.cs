@@ -50,7 +50,6 @@ namespace MostriVsEroi.ConsoleApp
         }
 
         private static void Login()
-        
         {
             string nickName;
             string password;
@@ -62,25 +61,25 @@ namespace MostriVsEroi.ConsoleApp
                 Console.WriteLine("Inserisci nickName: ");
                 nickName = Console.ReadLine();
                 giocatore = mainBL.GetGiocatoreByNickName(nickName);
-                if(giocatore == null)
+                if (giocatore == null)
                 {
                     Console.WriteLine("NickName non trovato, inserisci il nickName corretto: ");
                 }
             }
-            while (String.IsNullOrEmpty(nickName) || giocatore==null);
-                                 
+            while (String.IsNullOrEmpty(nickName) || giocatore == null);
+
             do
             {
                 Console.WriteLine("Inserisci la password: ");
                 password = Console.ReadLine();
-                if (giocatore.Password != password )
+                if (giocatore.Password != password)
                 {
                     Console.WriteLine("Password non corretta, riprova: ");
                 }
             }
             while (String.IsNullOrEmpty(password) || giocatore.Password != password);
 
-            if(giocatore.IsAdmin != true)
+            if (giocatore.IsAdmin != true)
             {
                 MenuNonAdmin menuNonAdmin = new MenuNonAdmin(giocatore); //qui ci va private static readonly
                 menuNonAdmin.Naviga();
@@ -91,7 +90,6 @@ namespace MostriVsEroi.ConsoleApp
                 menuAdmin.Naviga();
             }
         }
-
         private static void Registration()
         {
             string nickName;
@@ -114,7 +112,7 @@ namespace MostriVsEroi.ConsoleApp
             do
             {
                 Console.WriteLine("Inserisci la password: ");
-                password = Console.ReadLine();               
+                password = Console.ReadLine();
             }
             while (String.IsNullOrEmpty(password));
             giocatore.Password = password;
@@ -124,50 +122,52 @@ namespace MostriVsEroi.ConsoleApp
             Console.WriteLine("Registrazione avvenuta con successo");
             bool isAdded = mainBL.AddGiocatore(giocatore);
 
-            MenuNonAdmin menuNonAdmin = new MenuNonAdmin(giocatore); 
+            MenuNonAdmin menuNonAdmin = new MenuNonAdmin(giocatore);
             menuNonAdmin.Naviga();
 
 
         }
-
         protected void Gioca(Giocatore giocatore)
+
         {
             if (giocatore.eroi.Count == 0)
             {
                 Console.WriteLine("\n La tua lista eroi è vuota! Inserisci eroi per procedere");
-                Eroe eroe = new Eroe();
-                Console.WriteLine("Crea un nuovo eroe");
-                int choice;
-                do
-                {
-                    Console.WriteLine("\n[1] Guerriero \n[2] Mago");
-                }
-                while (!(int.TryParse(Console.ReadLine(), out choice) && choice >=1 && choice <=2));
-
-                switch (choice)
-                {
-                    case 1:
-                        Console.WriteLine("Hai scelto di creare Eroe Guerriero");
-                        Eroe guerriero = new Eroe();
-                        guerriero.Categoria = CategoriaEnum.Guerriero;
-                        guerriero.PuntiAccumulati = 0;
-                        guerriero.IdGiocatore = giocatore.Id;
-                        guerriero.CalcolaLivello();
-                        Console.WriteLine("Seleziona un'arma");                     
-                        List<Arma> listaArmi = (List<Arma>)mainBL.FetchArmiByCategory(guerriero.Categoria);
-                        Arma armaSScelta = ScegliArma(listaArmi);
-                        guerriero.IdArma = armaSScelta.Id;
-                        Eroe nuovoEroeGuerriero = mainBL.AggiungiEroe(guerriero);
-                        giocatore.eroi.Add(guerriero);
-                        Console.WriteLine("Eroe aggiunto correttamente alla lista del giocatore");
-                      break;
-                    case 2:
-                        Console.WriteLine("Hai scelto di creare Eroe Mago");
-                        break;
-                }
-            }             
+                CreaEroe(giocatore);
+            }
+            Console.WriteLine("Scegli tra i tuoi eroi");
+            Eroe eroeScelto = ScegliEroe(giocatore.eroi);
+            Mostro mostroScelto = mainBL.ScegliMostroRandom(eroeScelto);
+            int scelta;
+            do
+            {
+                Console.WriteLine("\n[1] per attaccare \n[2] per fuggire");
+            }
+            while (!(int.TryParse(Console.ReadLine(), out scelta) && scelta >=1 &&scelta <=2));
+            switch (scelta)
+            {
+                case 1:
+                    int puntiDannoGiocatore = AttaccoGiocatore(eroeScelto);
+                    mostroScelto.PuntiVita -= puntiDannoGiocatore;
+                    int PuntiDannoMostro = AttaccoMostro(mostroScelto);
+                    eroeScelto.PuntiVita -= PuntiDannoMostro;
+                    break;
+                case 2:
+                    
+                    break;
+            }          
         }
 
+        private int AttaccoMostro(Mostro mostroScelto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int AttaccoGiocatore(Eroe eroe)
+        {
+            Arma arma = mainBL.GetArma(eroe.IdArma);
+            return arma.PuntiDanno;           
+        }
         private Arma ScegliArma(List<Arma> listaArmi)
         {
             int scelta;
@@ -182,20 +182,72 @@ namespace MostriVsEroi.ConsoleApp
             {
                 Console.WriteLine("Seleziona l'Id dell'arma che vuoi");
             }
-            while(!(int.TryParse(Console.ReadLine(), out scelta) && scelta >= min && scelta <= max));
-
+            while (!(int.TryParse(Console.ReadLine(), out scelta) && scelta >= min && scelta <= max));
             return listaArmi.SingleOrDefault(e => e.Id == scelta);
-             
         }
-
-        protected void CreaEroe()
+        protected void CreaEroe(Giocatore giocatore)
         {
+            Console.WriteLine("Crea un nuovo eroe");
+            int choice;
+            do
+            {
+                Console.WriteLine("\n[1] Guerriero \n[2] Mago");
+            }
+            while (!(int.TryParse(Console.ReadLine(), out choice) && choice >= 1 && choice <= 2));
 
+            switch (choice)
+            {
+                case 1:
+                    Console.WriteLine("Hai scelto di creare Eroe Guerriero");
+                    Eroe guerriero = new Eroe();
+                    guerriero.Categoria = CategoriaEnum.Guerriero;
+                    guerriero.PuntiAccumulati = 0;
+                    guerriero.IdGiocatore = giocatore.Id;
+                    guerriero.CalcolaLivello();
+                    Console.WriteLine("Seleziona un'arma");
+                    List<Arma> listaArmi = (List<Arma>)mainBL.FetchArmiByCategory(guerriero.Categoria);
+                    Arma armaSScelta = ScegliArma(listaArmi);
+                    guerriero.IdArma = armaSScelta.Id;
+                    Eroe nuovoEroeGuerriero = mainBL.AggiungiEroe(guerriero);
+                    giocatore.eroi.Add(guerriero);
+                    Console.WriteLine("Eroe aggiunto correttamente alla lista del giocatore");
+                    break;
+                case 2:
+                    Console.WriteLine("\nHai scelto di creare un Eroe Mago");
+                    Eroe eroeMago = new Eroe();
+                    eroeMago.PuntiAccumulati = 0;
+                    eroeMago.Categoria = CategoriaEnum.Mago;
+                    eroeMago.CalcolaLivello();
+                    List<Arma> listaArmiMago = (List<Arma>)mainBL.FetchArmiByCategory(eroeMago.Categoria);
+                    if (listaArmiMago.Count == 0)
+                    {
+                        Console.WriteLine("\nLista Armi vuota...");
+                    }
+                    Arma armaScelta1 = ScegliArma(listaArmiMago);
+                    eroeMago.IdArma = armaScelta1.Id;
+                    Eroe eroeMagoNew = mainBL.AggiungiEroe(eroeMago);
+                    giocatore.eroi.Add(eroeMagoNew);
+                    break;
+            }
         }
-
         protected void EliminaEroe()
         {
 
+        }
+        private Eroe ScegliEroe(List<Eroe> eroi)
+        {
+            int max = eroi.Max(b => b.Id);
+            int min = eroi.Min(b => b.Id);
+            int choice;
+            foreach (var eroe in eroi)
+            {
+                Console.WriteLine($"\nIdArma: {eroe.Id}, Livello:{eroe.Livello}, Punti Accumulati:{eroe.PuntiAccumulati}," +
+                $"Punti Vita:{eroe.PuntiVita}");
+            }
+            do
+            {
+                Console.WriteLine("\nScegli il tuo eroe, inserisci l'Id: ");
+            } while (!(int.TryParse(Console.ReadLine(), out choice) && choice >= min && choice <= max)); return eroi.SingleOrDefault(a => a.Id == choice);
         }
     }
 }

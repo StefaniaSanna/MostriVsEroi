@@ -30,7 +30,7 @@ namespace MostriVsEroi.Mock.Repositories
 
         public Arma GetById(int id)
         {
-            throw new NotImplementedException();
+            return InMemoryStorage.armi.FirstOrDefault(a => a.Id == id);
         }
 
 

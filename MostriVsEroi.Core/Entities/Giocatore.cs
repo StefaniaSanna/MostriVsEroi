@@ -23,6 +23,8 @@ namespace MostriVsEroi.Core.Entities
                 IsAdmin = true;
         }
 
+         
+
 
     }
 }
