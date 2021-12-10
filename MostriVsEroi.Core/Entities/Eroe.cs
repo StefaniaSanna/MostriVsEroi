@@ -21,17 +21,26 @@ namespace MostriVsEroi.Core.Entities
             switch (PuntiAccumulati)
             {
                 case int n when (n <= 29):
+                    Livello = 1;
+                    PuntiVita += 20;
                     break;
                 case int n when (n > 29 && n <=59):
+                    Livello = 2;
+                    PuntiVita += 40;
                     break;
                 case int n when (n > 59 && n <= 89):
+                    Livello = 3;
+                    PuntiVita += 60;
                     break;
                 case int n when (n > 89 && n <= 119):
+                    Livello = 4;
+                    PuntiVita += 80;
                     break;
-                case int n when (n > 119 && n <= 120):
+                case int n when (n >119):
+                    Livello = 5;
+                    PuntiVita += 100;
                     break;
             }
-
         }
 
 

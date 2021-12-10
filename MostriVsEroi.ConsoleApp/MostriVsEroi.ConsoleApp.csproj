@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MostriVsEroi.Core\MostriVsEroi.Core.csproj" />
+    <ProjectReference Include="..\MostriVsEroi.Mock\MostriVsEroi.Mock.csproj" />
+  </ItemGroup>
+
 </Project>

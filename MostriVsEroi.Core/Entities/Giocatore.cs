@@ -14,6 +14,15 @@ namespace MostriVsEroi.Core.Entities
         public bool IsAdmin { get; set; }
         public List<Eroe> eroi { get; set; } = new List<Eroe>();
 
+        public void SetAdmin()
+        {
+            Eroe eroe = eroi.FirstOrDefault(eroi => eroi.Livello >=3);
+            if (eroe == null)
+                IsAdmin = false;
+            else
+                IsAdmin = true;
+        }
+
 
     }
 }
