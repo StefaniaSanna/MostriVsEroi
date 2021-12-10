@@ -24,7 +24,8 @@ namespace MostriVsEroi.Mock.Repositories
 
         public bool Delete(Eroe item)
         {
-            throw new NotImplementedException();
+            InMemoryStorage.eroi.Remove(item);
+            return true;
         }
 
         public IEnumerable<Eroe> FetchAllFilter(Func<Eroe, bool> filter = null)
@@ -37,7 +38,7 @@ namespace MostriVsEroi.Mock.Repositories
 
         public Eroe GetById(int id)
         {
-            throw new NotImplementedException();
+            return InMemoryStorage.eroi.SingleOrDefault(x => x.Id == id);
         }
 
         public bool Update(Eroe item)

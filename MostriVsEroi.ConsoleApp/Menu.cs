@@ -226,7 +226,7 @@ namespace MostriVsEroi.ConsoleApp
             Arma arma = mainBL.GetArma(eroe.IdArma);
             return arma.PuntiDanno;           
         }
-        public Arma ScegliArma(List<Arma> listaArmi) //
+        public Arma ScegliArma(List<Arma> listaArmi) 
         {
             int scelta;
             int max = listaArmi.Max(b => b.Id);
@@ -288,9 +288,33 @@ namespace MostriVsEroi.ConsoleApp
                     break;
             }
         }
-        protected void EliminaEroe()
+        protected void EliminaEroe(Giocatore giocatore)
         {
+            Console.WriteLine("\nEcco la lista dei tuoi eroi:");
+            foreach (var item in giocatore.eroi)
+            {
+                Console.WriteLine($"\nId:{item.Id}, Categoria:{item.Categoria}, Punti Vita:{item.PuntiVita}, Punti Accumulati: {item.PuntiAccumulati}, Livello:{item.Livello}");
+            }
+            int idEroe;
+            do
+            {
+                Console.WriteLine("\nInserire l'id dell'eroe da eliminare");
+            } while (!(int.TryParse(Console.ReadLine(), out idEroe)));
 
+            Eroe eroe = mainBL.GetEroeById(idEroe);
+            if (eroe == null)
+            {
+                Console.WriteLine("\nNon è stato trovato un eroe corrispondente all'ID inserito");
+            }
+            else
+            {
+                giocatore.eroi.Remove(eroe);
+                bool removeEroe = mainBL.Delete(eroe);
+                if (removeEroe == true)
+                {
+                    Console.WriteLine("\nEroe eliminato correttamente");
+                }
+            }
         }
         private Eroe ScegliEroe(List<Eroe> eroi)
         {

@@ -38,7 +38,7 @@ namespace MostriVsEroi.ConsoleApp
                         CreaEroe(giocatore);
                         break;
                     case '3':
-                        EliminaEroe();
+                        EliminaEroe(giocatore);
                         break;
                     case 'Q':
                         Console.WriteLine("Arrivederci");

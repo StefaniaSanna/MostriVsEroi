@@ -39,7 +39,7 @@ namespace MostriVsEroi.ConsoleApp
                         CreaEroe(giocatore);
                         break;
                     case '3':
-                        EliminaEroe();
+                        EliminaEroe(giocatore);
                         break;
                     case '4':
                         CreaMostro();
@@ -61,7 +61,7 @@ namespace MostriVsEroi.ConsoleApp
 
         private void CreaClassifica()
         {
-            throw new NotImplementedException();
+            mainBL.GetClassifica();
         }
 
         private void CreaMostro()
