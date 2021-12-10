@@ -128,41 +128,100 @@ namespace MostriVsEroi.ConsoleApp
 
         }
         protected void Gioca(Giocatore giocatore)
-
         {
+            bool continuaGioco = false;
             if (giocatore.eroi.Count == 0)
             {
                 Console.WriteLine("\n La tua lista eroi è vuota! Inserisci eroi per procedere");
                 CreaEroe(giocatore);
             }
-            Console.WriteLine("Scegli tra i tuoi eroi");
-            Eroe eroeScelto = ScegliEroe(giocatore.eroi);
-            Mostro mostroScelto = mainBL.ScegliMostroRandom(eroeScelto);
-            int scelta;
+
             do
             {
-                Console.WriteLine("\n[1] per attaccare \n[2] per fuggire");
+                Console.WriteLine("Scegli tra i tuoi eroi");
+                Eroe eroeScelto = ScegliEroe(giocatore.eroi);
+                Mostro mostroScelto = mainBL.ScegliMostroRandom(eroeScelto);
+
+                bool escape = false;
+
+                do
+                {
+                    int scelta;
+                    do
+                    {
+                        Console.WriteLine("\n[1] per attaccare \n[2] per fuggire");
+                    }
+                    while (!(int.TryParse(Console.ReadLine(), out scelta) && scelta >= 1 && scelta <= 2));
+                    switch (scelta)
+                    {
+                        case 1:
+                            Console.WriteLine("E' il tuo turno, attacca!");
+                            int puntiDannoGiocatore = AttaccoGiocatore(eroeScelto);
+                            mostroScelto.PuntiVita -= puntiDannoGiocatore;
+                            int PuntiDannoMostro = AttaccoMostro(mostroScelto);
+                            eroeScelto.PuntiVita -= PuntiDannoMostro;
+                            Console.WriteLine("Il mostro ha attaccato!");
+                            break;
+                        case 2:
+                            escape = Fuggi();
+                            if (escape == false)
+                            {
+                                Console.WriteLine("Non puoi fuggire!");
+                                int PuntiDannoMostro1 = AttaccoMostro(mostroScelto);
+                                eroeScelto.PuntiVita -= PuntiDannoMostro1;
+                                Console.WriteLine("Il mostro ha attaccato!");
+                            }
+                            break;
+                    }
+                }
+                while (!(escape == true || mostroScelto.PuntiVita <= 0 || eroeScelto.PuntiVita <= 0));
+                if (escape == true)
+                {
+                    Console.WriteLine("Hai deciso di fuggire");
+                }
+                else if (mostroScelto.PuntiVita <= 0)
+                {
+                    Console.WriteLine("Hai sconfitto il mostro");
+                }
+                else if (eroeScelto.PuntiVita <= 0)
+                {
+                    Console.WriteLine("Hai perso contro il mostro");
+                }
+                int scelta1;
+                do
+                {
+                    Console.WriteLine("Vuoi continuare a giocare? \n[1] Si \n[2] No");
+                }
+                while (!(int.TryParse(Console.ReadLine(), out scelta1) && scelta1 >= 1 && scelta1 <= 2));
+                if (scelta1 == 1)
+                {
+                    continuaGioco = true;
+                }
+                else
+                {
+                    continuaGioco = false;
+                }
             }
-            while (!(int.TryParse(Console.ReadLine(), out scelta) && scelta >=1 &&scelta <=2));
-            switch (scelta)
-            {
-                case 1:
-                    int puntiDannoGiocatore = AttaccoGiocatore(eroeScelto);
-                    mostroScelto.PuntiVita -= puntiDannoGiocatore;
-                    int PuntiDannoMostro = AttaccoMostro(mostroScelto);
-                    eroeScelto.PuntiVita -= PuntiDannoMostro;
-                    break;
-                case 2:
-                    
-                    break;
-            }          
+            while (continuaGioco==true);                               
         }
 
+        private bool Fuggi()
+        {
+            bool escape;
+            Random random = new Random();
+            int r = random.Next(1, 3);
+            if (r == 1)
+                escape = true;
+            else
+                escape = false;
+            return escape;
+
+        }
         private int AttaccoMostro(Mostro mostroScelto)
         {
-            throw new NotImplementedException();
+            Arma arma = mainBL.GetArma(mostroScelto.IdArma);
+            return arma.PuntiDanno;
         }
-
         public int AttaccoGiocatore(Eroe eroe)
         {
             Arma arma = mainBL.GetArma(eroe.IdArma);
@@ -241,7 +300,7 @@ namespace MostriVsEroi.ConsoleApp
             int choice;
             foreach (var eroe in eroi)
             {
-                Console.WriteLine($"\nIdArma: {eroe.Id}, Livello:{eroe.Livello}, Punti Accumulati:{eroe.PuntiAccumulati}," +
+                Console.WriteLine($"\nId: {eroe.Id}, Livello:{eroe.Livello}, Punti Accumulati:{eroe.PuntiAccumulati}," +
                 $"Punti Vita:{eroe.PuntiVita}");
             }
             do
