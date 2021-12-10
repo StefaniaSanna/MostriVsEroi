@@ -22,13 +22,17 @@ namespace MostriVsEroi.Mock.Repositories
 
         public IEnumerable<Arma> FetchAllFilter(Func<Arma, bool> filter = null)
         {
-            throw new NotImplementedException();
+            if (filter != null)
+                return InMemoryStorage.armi.Where(filter).ToList();
+            else
+                return InMemoryStorage.armi.ToList();
         }
 
         public Arma GetById(int id)
         {
             throw new NotImplementedException();
         }
+
 
         public bool Update(Arma item)
         {

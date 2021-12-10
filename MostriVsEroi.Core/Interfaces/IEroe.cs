@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace MostriVsEroi.Core.Interfaces
 {
-    public interface IEroe: IRepository<Eroe>
+    public interface IEroe : IRepository<Eroe>
     {
+        Eroe AddEroe(Eroe guerriero);
     }
 }

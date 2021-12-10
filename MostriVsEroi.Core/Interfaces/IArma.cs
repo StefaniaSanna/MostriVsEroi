@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace MostriVsEroi.Core.Interfaces
 {
-    public interface IArma: IRepository<Arma>
+    public interface IArma : IRepository<Arma>
     {
+        //(int,int) EstremiListaArma(List<Arma> listaArmi);
     }
 }

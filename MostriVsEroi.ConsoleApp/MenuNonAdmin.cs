@@ -28,10 +28,11 @@ namespace MostriVsEroi.ConsoleApp
                     "\n[Q] per uscire");
                 choice = Console.ReadKey().KeyChar;
 
+                
                 switch (choice)
                 {
                     case '1':
-                        Gioca();
+                        Gioca(giocatore);
                         break;
                     case '2':
                         CreaEroe();

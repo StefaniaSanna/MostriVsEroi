@@ -22,7 +22,10 @@ namespace MostriVsEroi.Mock.Repositories
 
         public IEnumerable<Mostro> FetchAllFilter(Func<Mostro, bool> filter = null)
         {
-            throw new NotImplementedException();
+            if (filter != null)
+                return InMemoryStorage.mostri.Where(filter).ToList();
+            else
+                return InMemoryStorage.mostri.ToList();
         }
 
         public Mostro GetById(int id)

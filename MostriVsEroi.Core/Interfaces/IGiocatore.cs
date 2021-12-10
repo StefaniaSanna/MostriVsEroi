@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace MostriVsEroi.Core.Interfaces
 {
-    public interface IGiocatore: IRepository<Giocatore>
+    public interface IGiocatore : IRepository<Giocatore>
     {
+        Giocatore GetByNickName(string? nickName);
     }
 }

@@ -15,6 +15,13 @@ namespace MostriVsEroi.Mock.Repositories
             throw new NotImplementedException();
         }
 
+        public Eroe AddEroe(Eroe guerriero)
+        {
+            guerriero.Id = InMemoryStorage.eroi.Max(x => x.Id) + 1;
+            InMemoryStorage.eroi.Add(guerriero);
+            return guerriero;
+        }
+
         public bool Delete(Eroe item)
         {
             throw new NotImplementedException();
@@ -22,7 +29,10 @@ namespace MostriVsEroi.Mock.Repositories
 
         public IEnumerable<Eroe> FetchAllFilter(Func<Eroe, bool> filter = null)
         {
-            throw new NotImplementedException();
+            if (filter != null)
+                return InMemoryStorage.eroi.Where(filter).ToList();
+            else
+                return InMemoryStorage.eroi.ToList();
         }
 
         public Eroe GetById(int id)

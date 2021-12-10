@@ -33,7 +33,7 @@ namespace MostriVsEroi.ConsoleApp
                 switch (choice)
                 {
                     case '1':
-                        Gioca();
+                        Gioca(giocatore);
                         break;
                     case '2':
                         CreaEroe();
