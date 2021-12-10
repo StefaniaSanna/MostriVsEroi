@@ -15,6 +15,13 @@ namespace MostriVsEroi.Mock.Repositories
             throw new NotImplementedException();
         }
 
+        public Mostro AddMostro(Mostro mostro)
+        {
+            mostro.Id = InMemoryStorage.mostri.Max(x => x.Id) + 1;
+            InMemoryStorage.mostri.Add(mostro);
+            return mostro;
+        }
+
         public bool Delete(Mostro item)
         {
             throw new NotImplementedException();

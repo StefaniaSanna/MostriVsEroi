@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace MostriVsEroi.Core.Interfaces
 {
-    public interface IMostro: IRepository<Mostro>
+    public interface IMostro : IRepository<Mostro>
     {
+        Mostro AddMostro(Mostro mostro);
     }
 }

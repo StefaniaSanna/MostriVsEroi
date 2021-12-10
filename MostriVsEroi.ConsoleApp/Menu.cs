@@ -204,7 +204,6 @@ namespace MostriVsEroi.ConsoleApp
             }
             while (continuaGioco==true);                               
         }
-
         private bool Fuggi()
         {
             bool escape;
@@ -227,7 +226,7 @@ namespace MostriVsEroi.ConsoleApp
             Arma arma = mainBL.GetArma(eroe.IdArma);
             return arma.PuntiDanno;           
         }
-        private Arma ScegliArma(List<Arma> listaArmi)
+        public Arma ScegliArma(List<Arma> listaArmi) //
         {
             int scelta;
             int max = listaArmi.Max(b => b.Id);
@@ -265,8 +264,8 @@ namespace MostriVsEroi.ConsoleApp
                     guerriero.CalcolaLivello();
                     Console.WriteLine("Seleziona un'arma");
                     List<Arma> listaArmi = (List<Arma>)mainBL.FetchArmiByCategory(guerriero.Categoria);
-                    Arma armaSScelta = ScegliArma(listaArmi);
-                    guerriero.IdArma = armaSScelta.Id;
+                    Arma armaScelta = ScegliArma(listaArmi);
+                    guerriero.IdArma = armaScelta.Id;
                     Eroe nuovoEroeGuerriero = mainBL.AggiungiEroe(guerriero);
                     giocatore.eroi.Add(guerriero);
                     Console.WriteLine("Eroe aggiunto correttamente alla lista del giocatore");

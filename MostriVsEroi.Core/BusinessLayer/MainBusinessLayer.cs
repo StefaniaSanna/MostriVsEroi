@@ -61,5 +61,10 @@ namespace MostriVsEroi.Core.BusinessLayer
         {
             return _mockRepoArma.GetById(idArma);
         }
+
+        public Mostro AggiungiMostro(Mostro mostro)
+        {
+            return _mockRepoMostro.AddMostro(mostro);
+        }
     }
 }

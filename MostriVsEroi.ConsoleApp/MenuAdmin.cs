@@ -66,7 +66,57 @@ namespace MostriVsEroi.ConsoleApp
 
         private void CreaMostro()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Crea un nuovo mostro");
+            int choice;
+            do
+            {
+                Console.WriteLine("\n[1] Cultista \n[2] Orco \n[3] Signore del male");
+            }
+            while (!(int.TryParse(Console.ReadLine(), out choice) && choice >= 1 && choice <= 3));
+
+            switch (choice)
+            {
+                case 1:
+                    Console.WriteLine("Hai scelto di creare Cultista");
+                    Mostro cultista = new Mostro();
+                    cultista.Categoria = CategoriaEnum.Cultista;
+                    cultista.PuntiAccumulati = 0;
+                    cultista.CalcolaLivello();
+                    Console.WriteLine("Seleziona un'arma");
+                    List<Arma> listaArmi = (List<Arma>)mainBL.FetchArmiByCategory(cultista.Categoria);
+                    Arma armaScelta =ScegliArma(listaArmi);
+                    cultista.IdArma = armaScelta.Id;
+                    Mostro nuovoMostroCultista = mainBL.AggiungiMostro(cultista);
+                    Console.WriteLine("Cultista aggiunto correttamente");
+                   
+                    break;
+                case 2:
+                    Console.WriteLine("Hai scelto di creare Orco");
+                    Mostro orco = new Mostro();
+                    orco.Categoria = CategoriaEnum.Orco;
+                    orco.PuntiAccumulati = 0;
+                    orco.CalcolaLivello();
+                    Console.WriteLine("Seleziona un'arma");
+                    List<Arma> listaArmi1 = (List<Arma>)mainBL.FetchArmiByCategory(orco.Categoria);
+                    Arma armaScelta1 = ScegliArma(listaArmi1);
+                    orco.IdArma = armaScelta1.Id;
+                    Mostro nuovoMostroOrco = mainBL.AggiungiMostro(orco);
+                    Console.WriteLine("Orco aggiunto correttamente");
+                    break;
+                case 3:
+                    Console.WriteLine("Hai scelto di creare Signore del Male");
+                    Mostro signoreDelMale = new Mostro();
+                    signoreDelMale.Categoria = CategoriaEnum.SignoreDelMale;
+                    signoreDelMale.PuntiAccumulati = 0;
+                    signoreDelMale.CalcolaLivello();
+                    Console.WriteLine("Seleziona un'arma");
+                    List<Arma> listaArmi2 = (List<Arma>)mainBL.FetchArmiByCategory(signoreDelMale.Categoria);
+                    Arma armaScelta2 = ScegliArma(listaArmi2);
+                    signoreDelMale.IdArma = armaScelta2.Id;
+                    Mostro nuovoMostroSignoreDelMale = mainBL.AggiungiMostro(signoreDelMale);
+                    Console.WriteLine("Signore del male aggiunto correttamente");
+                    break;
+            }
         }
     }
 }
